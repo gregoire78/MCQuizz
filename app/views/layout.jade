@@ -1,0 +1,45 @@
+doctype html
+html(lang='en')
+	head
+		// Required meta tags always come first
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		meta(http-equiv='x-ua-compatible', content='ie=edge')
+		// Bootstrap CSS
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css', integrity='sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi', crossorigin='anonymous')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		nav.navbar.navbar-full.navbar-light.bg-faded
+			div.container
+				button.navbar-toggler.hidden-lg-up(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+				#navbarResponsive.collapse.navbar-toggleable-md
+					a.navbar-brand(href='#')
+						img.d-inline-block.align-top(src='http://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg', width='30', height='30', alt='')
+						|  Navbar
+					ul.nav.navbar-nav
+						li.nav-item.active
+							a.nav-link(href='#')
+								| Accueil 
+								span.sr-only (current)
+						li.nav-item
+							a.nav-link(href='#') Connexion
+						li.nav-item
+							a.nav-link(href='#') Inscription
+						li.nav-item.dropdown
+							a#responsiveNavbarDropdown.nav-link.dropdown-toggle(href='http://example.com', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Dropdown
+							.dropdown-menu(aria-labelledby='responsiveNavbarDropdown')
+								a.dropdown-item(href='#') Action
+								a.dropdown-item(href='#') Another action
+								a.dropdown-item(href='#') Something else here
+		div.container.main
+			nav.breadcrumb
+				a.breadcrumb-item(href='#') Accueil
+				a.breadcrumb-item(href='#') Connexion
+				a.breadcrumb-item(href='#') Data
+				span.breadcrumb-item.active Bootstrap
+			block content
+		// jQuery first, then Tether, then Bootstrap JS.
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', integrity='sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7', crossorigin='anonymous')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js', integrity='sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8', crossorigin='anonymous')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js', integrity='sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK', crossorigin='anonymous')
+		script(src='/bootstrap-4.0.0-alpha.5-dist/bootstrap-flex.min.css')
