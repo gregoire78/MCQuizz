@@ -60,21 +60,15 @@ html(lang='en')
                         console.log(listValues); // [ "Item 1", "Item 2", ... ]
                     })
                     .on('out', function (el) {
-                        $('.gu-mirror').css({cursor: 'not-allowed'});
+                        $('.gu-mirror').removeClass('cu-over').addClass('cu-out');
                         console.log('out');
                     })
                     .on('over', function (el) {
-                        $('.gu-mirror').css({
-                            cursor: 'move'
-                        });
+                        $('.gu-mirror').removeClass('cu-out').addClass('cu-over');
                         console.log('over');
                     })
                     .on('dragend', function (el) {
-                        $('.gu-mirror').css({
-                            cursor: 'move'
-                        });
+                        $('.gu-mirror').removeClass('cu-out').removeClass('cu-over');
                         console.log('end');
-                    });
+                    })
             })();
-
-

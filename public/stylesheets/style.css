@@ -2,15 +2,18 @@
 	    padding-top: 15px;
 }
 
-#sortable div {
+#sortable div, .cu-cl {
 	cursor: move;
     cursor: grab;
     cursor: -moz-grab;
     cursor: -webkit-grab;
 }
-.gu-mirror {
+.cu-over {
 	cursor: move;
 	cursor: grabbing;
 	cursor: -moz-grabbing;
 	cursor: -webkit-grabbing;
+}
+.cu-out{
+	cursor: not-allowed !important;
 }
