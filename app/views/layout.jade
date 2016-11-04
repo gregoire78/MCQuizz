@@ -9,7 +9,6 @@ html(lang='en')
 
         link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css', integrity='sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi', crossorigin='anonymous')
         link(rel='/bootstrap-4.0.0-alpha.5-dist/css/bootstrap-flex.min.css')
-        link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
         link(rel='stylesheet', href='/dragula-3.7.2/dist/dragula.min.css')
         link(rel='stylesheet', href='/stylesheets/style.css')
     body
@@ -49,16 +48,33 @@ html(lang='en')
         script(src='/dragula-3.7.2/dist/dragula.min.js')
         script.
             (function () {
-                dragula([document.getElementById('sortable')]).on('drop', function (el) {
-                    var $sortableList = $("#sortable");
-                    var listElements = $sortableList.children();
-                    console.log(listElements); // [ <li>, <li>, ... ]
-                    var listValues = [];
-                    listElements.each(function (i, o) {
-                        listValues.push($(o).data('rep'));
+                var $sortableList = $("#sortable");
+                dragula([document.getElementById('sortable')])
+                    .on('drop', function (el) {
+                        var listElements = $sortableList.children();
+                        console.log(listElements); // [ <div>, <div>, ... ]
+                        var listValues = [];
+                        listElements.each(function (i, o) {
+                            listValues.push($(o).data('rep'));
+                        })
+                        console.log(listValues); // [ "Item 1", "Item 2", ... ]
                     })
-                    console.log(listValues); // [ "Item 1", "Item 2", ... ]
-                })
+                    .on('out', function (el) {
+                        $('.gu-mirror').css({cursor: 'not-allowed'});
+                        console.log('out');
+                    })
+                    .on('over', function (el) {
+                        $('.gu-mirror').css({
+                            cursor: 'move'
+                        });
+                        console.log('over');
+                    })
+                    .on('dragend', function (el) {
+                        $('.gu-mirror').css({
+                            cursor: 'move'
+                        });
+                        console.log('end');
+                    });
             })();
 
 

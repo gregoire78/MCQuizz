@@ -1,3 +1,16 @@
 .main {
 	    padding-top: 15px;
 }
+
+#sortable div {
+	cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+.gu-mirror {
+	cursor: move;
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
