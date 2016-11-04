@@ -3,3 +3,13 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  #sortable
+      div(data-rep="0")
+          | Clicking on these elements triggers a regular
+          code click
+          |  event you can listen to.
+      div(data-rep="1") Try dragging or clicking on this element.
+      div(data-rep="2") Note how you can click normally?
+      div(data-rep="3") Drags don't trigger click events.
+      div(data-rep="4") Clicks don't end up in a drag, either.
+      div(data-rep="5") This is useful if you have elements that can be both clicked or dragged.
