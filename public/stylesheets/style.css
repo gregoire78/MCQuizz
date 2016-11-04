@@ -17,3 +17,6 @@
 .cu-out{
 	cursor: not-allowed !important;
 }
+#sortable div, .gu-mirror{
+	transition: opacity 0.4s ease-in-out;
+}
