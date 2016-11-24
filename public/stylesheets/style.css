@@ -2,7 +2,7 @@
     padding-top: 15px;
 }
 
-#sortable div, .cu-cl {
+.sortableList div, .cu-cl {
 	cursor: move;
     cursor: grab;
     cursor: -moz-grab;
@@ -17,6 +17,6 @@
 .cu-out{
 	cursor: not-allowed !important;
 }
-#sortable div, .gu-mirror{
+.sortableList div, .gu-mirror{
 	transition: opacity 0.4s ease-in-out;
 }
