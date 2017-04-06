@@ -3,6 +3,18 @@ extends layout
 block content
 	h1= title
 	p Welcome to #{title}
+	.row.restaurants
+		each value, key in restaurants
+			.col-sm-5.col-md-6.restaurant
+				.card.card-inverse
+					img.card-img(src='http://api.gregoirejoncour.xyz/images/#{value.image}', alt='Card image')
+					.card-back
+					.card-img-overlay
+						h4.card-title #{value.name}
+						p.card-text.desc
+							| #{value.description}
+						p.card-text
+							small.text-muted #{value.location.address} - #{value.location.postal_code} - #{value.location.city}
 	#sortable.sortableList
 		div(data-rep="0")
 			| Clicking on these elements triggers a regular
@@ -17,25 +29,22 @@ block content
 	#sortable1.sortableList
 		div(data-rep="0")
 			.media
-				a.media-left.media-middle(href='#')
-					img.media-object(src='http://placehold.it/64x64', alt='Generic placeholder image')
+				img.d-flex.mr-3(src='http://placehold.it/64x64', alt='Generic placeholder image')
 				.media-body
-					h4.media-heading Media heading
-					| Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+					h5.mt-0 Media heading
+					|     Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
 		div(data-rep="1")
 			.media
-				a.media-left.media-middle(href='#')
-					img.media-object(src='http://placehold.it/64x64', alt='Generic placeholder image')
+				img.d-flex.mr-3(src='http://placehold.it/64x64', alt='Generic placeholder image')
 				.media-body
-					h4.media-heading Media heading
-					| Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+					h5.mt-0 Media heading
+					|     Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
 		div(data-rep="2")
 			.media
-				a.media-left.media-middle(href='#')
-					img.media-object(src='http://placehold.it/64x64', alt='Generic placeholder image')
+				img.d-flex.mr-3(src='http://placehold.it/64x64', alt='Generic placeholder image')
 				.media-body
-					h4.media-heading Media heading
-					| Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+					h5.mt-0 Media heading
+					|     Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
 
 
 block script
@@ -45,6 +54,7 @@ block script
 
 			sortMain('sortable');
 			sortMain('sortable1');
+			//sortMain('sortable2', false);
 
 			function shuffle(array) {
 				var tmp, current, top = array.length;
@@ -57,7 +67,7 @@ block script
 				return array;
 			}
 
-			function sortMain(id){
+			function sortMain(id, rand){
 				var $sortableList = $('#'+id);
 				dragula([document.getElementById(id)])
 					.on('drop', function (el) {
@@ -100,6 +110,8 @@ block script
 					return this;
 				};
 
-				$sortableList.randomize('div');
+				if (rand == undefined || rand == true){
+					$sortableList.randomize('div');
+				}
 			}
 		})();
