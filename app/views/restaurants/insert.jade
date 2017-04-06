@@ -101,8 +101,6 @@ block script
 			});
 		}).on('hidden.bs.modal', function (e) {
 			var croppedCanvas = $('#image').cropper('getCroppedCanvas', {
-				width: 160*2,
-				height: 90*2,
 				fillColor: 'green'
 			});
 			var roundedCanvas = getDataURLCanvas(croppedCanvas);
