@@ -48,6 +48,7 @@ block stylesheet
 	link(rel='stylesheet', href='/stylesheets/restaurant.css')
 
 block script
+	script(src='/js/canvas-to-blob.min.js')
 	script.
 		function getDataURLCanvas(sourceCanvas) {
 			var canvas = document.createElement('canvas');
@@ -83,17 +84,17 @@ block script
 			$('#image').cropper({
 				aspectRatio: 16 / 10,
 				autoCropArea: 1,
-				zoomOnWheel: true,
-				crop: function (e) {
-					// Output the result data for cropping image.
-					console.log(e.x);
-					console.log(e.y);
-					console.log(e.width);
-					console.log(e.height);
-					console.log(e.rotate);
-					console.log(e.scaleX);
-					console.log(e.scaleY);
-				}
+				zoomOnWheel: true
+				//crop: function (e) {
+				//	// Output the result data for cropping image.
+				//	console.log(e.x);
+				//	console.log(e.y);
+				//	console.log(e.width);
+				//	console.log(e.height);
+				//	console.log(e.rotate);
+				//	console.log(e.scaleX);
+				//	console.log(e.scaleY);
+				//},
 				//built: function () {
 				//	$('#image').cropper('setCropBoxData', cropBoxData);
 				//	$('#image').cropper('setCanvasData', canvasData);
@@ -106,6 +107,9 @@ block script
 			var roundedCanvas = getDataURLCanvas(croppedCanvas);
 			//cropBoxData = $('#image').cropper('getCropBoxData');
 			//canvasData = $('#image').cropper('getCanvasData');
-			$(".de").empty().html('<img src="' + roundedCanvas.toDataURL() + '">');
+			var dataURL = roundedCanvas.toDataURL('image/png');
+			$(".de").empty().html('<img src="' + dataURL + '">');
+			var blob = dataURLtoBlob(dataURL);
+			console.log(blob)
 			$('#image').cropper('destroy');
 		})
