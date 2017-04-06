@@ -15,6 +15,11 @@ let Restaurants = {
 				res.render('restaurants/index', {title: 'O\'Resto', restaurants: JSON.parse(body).restaurants});
 			}
 		});
+	},
+
+
+	insert: (req, res) => {
+		res.render('restaurants/insert', {title: 'O\'Resto'});
 	}
 };
 

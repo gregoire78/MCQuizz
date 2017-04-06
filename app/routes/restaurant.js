@@ -6,4 +6,8 @@ var restaurants = require('../controllers/Restaurants'); // Nous allons récuper
 /* GET Récupère la liste des utilisateurs */
 router.get('/', restaurants.index);
 
+/* GET Récupère la liste des utilisateurs */
+router.get('/insert', restaurants.insert);
+router.post('/insert', restaurants.insert);
+
 module.exports = router;
