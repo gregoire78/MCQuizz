@@ -1,38 +1,113 @@
 extends ../layout
 
 block content
+	a(href='https://restaurant.michelin.fr/restaurants/france', target="_blank") Guide Michelin
 	form(method='POST', action='')
 		.form-group
-			label(for='restoName') Nom du restaurant
-			input#restoName.form-control(type='email', aria-describedby='emailHelp', placeholder='Entrer le nom restaurant')
-			small#restoNameHelp.form-text.text-muted Le nom du restaurant est primordiale.
+			label(for='inputRestoName') Nom du restaurant
+			input#inputRestoName.form-control(type='text', aria-describedby='emailHelp', placeholder='Entrez le nom du restaurant')
+			small#restoNameHelp.form-text.text-muted Le nom du restaurant est primordial.
 		.form-group
-			label(for='exampleInputPassword1') Password
-			input#exampleInputPassword1.form-control(type='password', placeholder='Password')
+			label(for='inputRestoAddress') Adresse
+			input#inputRestoAddress.form-control(type='text', placeholder='Adresse du restaurant')
 		.form-group
-			label(for='exampleTextarea') Example textarea
-			textarea#exampleTextarea.form-control(rows='3')
+			label(for='inputRestoCity') Ville
+			input#inputRestoCity.form-control(type='text', placeholder='Ville du restaurant')
 		.form-group
-			label(for='exampleInputFile') File input
+			label(for='inputRestoPostalCode') Code postal
+			input#inputRestoPostalCode.form-control(type='number', placeholder='Code postal du restaurant')
+		.form-group
+			label(for='inputRestoDescription') Description
+			textarea#inputRestoDescription.form-control(rows='3')
+		.form-group
+			label(for='exampleInputFile') Image
 			input#exampleInputFile.form-control-file(type='file', aria-describedby='fileHelp')
 			small#fileHelp.form-text.text-muted
 				| This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.
-		fieldset.form-group
-			legend Radio buttons
-			.form-check
-				label.form-check-label
-					input#optionsRadios1.form-check-input(type='radio', name='optionsRadios', value='option1', checked='')
-					|         Option one is this and that—be sure to include why it's great
-			.form-check
-				label.form-check-label
-					input#optionsRadios2.form-check-input(type='radio', name='optionsRadios', value='option2')
-					|         Option two can be something else and selecting it will deselect option one
-			.form-check.disabled
-				label.form-check-label
-					input#optionsRadios3.form-check-input(type='radio', name='optionsRadios', value='option3', disabled='')
-					|         Option three is disabled
-		.form-check
-			label.form-check-label
-				input.form-check-input(type='checkbox')
-				|       Check me out
 		button.btn.btn-primary(type='submit') Submit
+
+	// Button trigger modal
+	//button.btn.btn-primary(type='button', data-toggle='modal', data-target='#myModal')
+	//	| Launch demo modal
+	// Modal
+	#myModal.modal(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+		.modal-dialog.modal-lg(role='document')
+			.modal-content
+				.modal-header
+					h5#exampleModalLabel.modal-title Modal title
+					//button.close(type='button', data-dismiss='modal', aria-label='Close')
+					//	span(aria-hidden='true') ×
+				.modal-body
+					div(style="width: 100%;")
+						img#image(src='')
+				.modal-footer
+					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+					button.btn.btn-primary(type='button') Save changes
+	.de
+block stylesheet
+	link(rel='stylesheet', href='/stylesheets/restaurant.css')
+
+block script
+	script.
+		function getDataURLCanvas(sourceCanvas) {
+			var canvas = document.createElement('canvas');
+			var context = canvas.getContext('2d');
+			var width = sourceCanvas.width;
+			var height = sourceCanvas.height;
+
+			canvas.width = width;
+			canvas.height = height;
+			context.drawImage(sourceCanvas, 0, 0, width, height);
+
+			return canvas;
+		}
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#image').attr('src', e.target.result)
+					$("#myModal").modal({
+						backdrop: 'static',
+						keyboard: false
+					}).modal('show')
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+
+		}
+		$("#exampleInputFile").change(function () {
+			readURL(this);
+		});
+		var cropBoxData,canvasData;
+		$("#myModal").on('shown.bs.modal', function (e) {
+			$('#image').cropper({
+				aspectRatio: 16 / 10,
+				autoCropArea: 1,
+				zoomOnWheel: true,
+				crop: function (e) {
+					// Output the result data for cropping image.
+					console.log(e.x);
+					console.log(e.y);
+					console.log(e.width);
+					console.log(e.height);
+					console.log(e.rotate);
+					console.log(e.scaleX);
+					console.log(e.scaleY);
+				}
+				//built: function () {
+				//	$('#image').cropper('setCropBoxData', cropBoxData);
+				//	$('#image').cropper('setCanvasData', canvasData);
+				//}
+			});
+		}).on('hidden.bs.modal', function (e) {
+			var croppedCanvas = $('#image').cropper('getCroppedCanvas', {
+				width: 160*2,
+				height: 90*2,
+				fillColor: 'green'
+			});
+			var roundedCanvas = getDataURLCanvas(croppedCanvas);
+			//cropBoxData = $('#image').cropper('getCropBoxData');
+			//canvasData = $('#image').cropper('getCanvasData');
+			$(".de").empty().html('<img src="' + roundedCanvas.toDataURL() + '">');
+			$('#image').cropper('destroy');
+		})
