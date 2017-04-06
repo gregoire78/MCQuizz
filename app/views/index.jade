@@ -3,18 +3,6 @@ extends layout
 block content
 	h1= title
 	p Welcome to #{title}
-	.row.restaurants
-		each value, key in restaurants
-			.col-sm-5.col-md-6.restaurant
-				.card.card-inverse
-					img.card-img(src='http://api.gregoirejoncour.xyz/images/#{value.image}', alt='Card image')
-					.card-back
-					.card-img-overlay
-						h4.card-title #{value.name}
-						p.card-text.desc
-							| #{value.description}
-						p.card-text
-							small.text-muted #{value.location.address} - #{value.location.postal_code} - #{value.location.city}
 	#sortable.sortableList
 		div(data-rep="0")
 			| Clicking on these elements triggers a regular
