@@ -2,7 +2,7 @@ extends ../layout
 
 block content
 	a(href='https://restaurant.michelin.fr/restaurants/france', target="_blank") Guide Michelin
-	form(method='POST', action='')
+	form#addResto(method='POST', action='')
 		.form-group
 			label(for='inputRestoName') Nom du restaurant
 			input#inputRestoName.form-control(type='text', aria-describedby='emailHelp', placeholder='Entrez le nom du restaurant')
@@ -68,13 +68,12 @@ block script
 			var context = canvas.getContext('2d');
 			var width = sourceCanvas.width;
 			var height = sourceCanvas.height;
-
 			canvas.width = width;
 			canvas.height = height;
 			context.drawImage(sourceCanvas, 0, 0, width, height);
-
 			return canvas;
 		}
+
 		function readURL(input) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
@@ -133,3 +132,11 @@ block script
 			console.log(blob)
 			$('#image').cropper('destroy');
 		})
+
+
+		$('#addResto').on('submit', function (e) {
+			e.preventDefault();
+			var $form = $(this);
+
+			$form.find('button[type=submit]').html('Chargement ...');
+		});
