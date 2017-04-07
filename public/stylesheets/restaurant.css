@@ -48,3 +48,17 @@ img {
 	margin-right: auto;
 	display: block;
 }
+
+.cropper-container {
+	background-color: #ffffff;
+}
+
+.previewImage {
+	height: 200px;
+}
+
+.previewCrop {
+	overflow: hidden;
+	width: 300px;
+	height: 300px;
+}
