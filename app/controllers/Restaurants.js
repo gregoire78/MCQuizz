@@ -17,9 +17,13 @@ let Restaurants = {
 		});
 	},
 
-
 	insert: (req, res) => {
 		res.render('restaurants/insert', {title: 'O\'Resto'});
+	},
+
+	create: (req, res) => {
+		console.log(req.body.resto, req.files);
+		res.json({result: req.body.resto})
 	}
 };
 

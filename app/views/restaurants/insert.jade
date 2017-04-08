@@ -2,26 +2,26 @@ extends ../layout
 
 block content
 	a(href='https://restaurant.michelin.fr/restaurants/france', target="_blank") Guide Michelin
-	form#addResto(method='POST', action='')
+	form#addResto(method='POST', action='', enctype="multipart/form-data")
 		.form-group
 			label(for='inputRestoName') Nom du restaurant
-			input#inputRestoName.form-control(type='text', aria-describedby='emailHelp', placeholder='Entrez le nom du restaurant')
+			input#inputRestoName.form-control(type='text', aria-describedby='emailHelp', placeholder='Entrez le nom du restaurant', name="resto[name]")
 			small#restoNameHelp.form-text.text-muted Le nom du restaurant est primordial.
 		.form-group
 			label(for='inputRestoAddress') Adresse
-			input#inputRestoAddress.form-control(type='text', placeholder='Adresse du restaurant')
+			input#inputRestoAddress.form-control(type='text', placeholder='Adresse du restaurant', name="resto[address]")
 		.form-group
 			label(for='inputRestoCity') Ville
-			input#inputRestoCity.form-control(type='text', placeholder='Ville du restaurant')
+			input#inputRestoCity.form-control(type='text', placeholder='Ville du restaurant', name="resto[city]")
 		.form-group
 			label(for='inputRestoPostalCode') Code postal
-			input#inputRestoPostalCode.form-control(type='number', placeholder='Code postal du restaurant')
+			input#inputRestoPostalCode.form-control(type='number', placeholder='Code postal du restaurant', name="resto[postalCode]")
 		.form-group
 			label(for='inputRestoDescription') Description
-			textarea#inputRestoDescription.form-control(rows='3')
+			textarea#inputRestoDescription.form-control(rows='3', name="resto[description]")
 		.form-group
 			label(for='exampleInputFile') Image
-			input#exampleInputFile.form-control-file(type='file', aria-describedby='fileHelp')
+			input#exampleInputFile.form-control-file(type='file', aria-describedby='fileHelp', accept="image/gif,image/png,image/jpeg,image/jpg", name="recfile")
 			small#fileHelp.form-text.text-muted
 				| This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.
 		button.btn.btn-primary(type='submit') Submit
@@ -97,7 +97,7 @@ block script
 				//alert('You selected a file - ' + "FileName:" + this.value + "; Length: " + this.value.length);
 			}
 		});
-		var cropBoxData,canvasData;
+		var cropBoxData,canvasData,croppedCanvas, blob;
 		$("#myModal").on('shown.bs.modal', function (e) {
 			$('#image').cropper({
 				aspectRatio: 16 / 10,
@@ -120,16 +120,15 @@ block script
 				//}
 			});
 		}).on('hidden.bs.modal', function (e) {
-			var croppedCanvas = $('#image').cropper('getCroppedCanvas', {
+			croppedCanvas = $('#image').cropper('getCroppedCanvas', {
 				fillColor: $("#custom").spectrum("get").toHexString()
 			});
-			var roundedCanvas = getDataURLCanvas(croppedCanvas);
+			//var roundedCanvas = getDataURLCanvas(croppedCanvas);
 			//cropBoxData = $('#image').cropper('getCropBoxData');
 			//canvasData = $('#image').cropper('getCanvasData');
-			var dataURL = roundedCanvas.toDataURL('image/png');
+			var dataURL = croppedCanvas.toDataURL('image/png');
 			$(".previewImage").empty().html('<img height="200" src="' + dataURL + '">');
-			var blob = dataURLtoBlob(dataURL);
-			console.log(blob)
+			blob = dataURLtoBlob(dataURL);
 			$('#image').cropper('destroy');
 		})
 
@@ -137,6 +136,29 @@ block script
 		$('#addResto').on('submit', function (e) {
 			e.preventDefault();
 			var $form = $(this);
-
-			$form.find('button[type=submit]').html('Chargement ...');
+			// Create a test FormData object
+			var formData = new FormData(this);
+			formData.append('file', blob, "cropped.png");
+			// Display the key/value pairs
+			for (var pair of formData.entries()) {
+				console.log(pair[0]+ ', ' + pair[1]);
+			}
+			$form.find('button[type=submit]').text('Chargement ...');
+			$.ajax({
+				data: formData,
+				type: "POST",
+				contentType: false,
+				cache: false,
+				processData:false,
+				dataType:"json"
+			})
+				.always(function () {
+					$form.find('button[type=submit]').text('Enregistrer');
+				})
+				.done(function (data, textStatus, jqXHR) {
+					console.log(jqXHR.responseJSON);
+				})
+				.fail(function (jqXHR, textStatus) {
+					console.log(jqXHR);
+				})
 		});
