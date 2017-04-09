@@ -60,22 +60,25 @@ let Restaurants = {
 
 	create: (req, res) => {
 		const resto = req.body.resto;
-		let formData = {
-			// Pass a simple key-value pair
-			name: resto.name,
-			address: resto.address,
-			city: resto.city,
-			postal_code: resto.postal_code,
-			description: resto.description,
-			file: fs.createReadStream(req.files.file.path),
-			recfile: fs.createReadStream(req.files.recfile.path)
-		};
-		request.post({url:'http://oresto.dev/restaurant/insert/?key=da39a3ee5e6b4b0d3255bfef95601890afd80709', formData: formData}, function(err,httpResponse,body) {
+		let formData = {};
+
+		if (resto.name) formData.name = resto.name;
+		if (resto.address) formData.address = resto.address;
+		if (resto.city) formData.city = resto.city;
+		if (resto.postal_code) formData.postal_code = resto.postal_code;
+		if (resto.description) formData.description = resto.description;
+
+		if (req.files.recfile.name != "") formData.recfile = fs.createReadStream(req.files.recfile.path);
+		if (req.files.file != undefined) formData.file = fs.createReadStream(req.files.file.path);
+
+		request.post({url:'http://api.gregoirejoncour.xyz/restaurant/insert/?key=da39a3ee5e6b4b0d3255bfef95601890afd80709', formData: formData}, function(err,httpResponse,body) {
 			if (!err && httpResponse.statusCode == 200) {
 				console.log(body);
 				fs.unlink(req.files.recfile.path);
-				fs.unlink(req.files.file.path);
-				res.json({result: req.body.resto, http: httpResponse, body: JSON.parse(body), files: req.files})
+				if (req.files.file != undefined) {
+					fs.unlink(req.files.file.path);
+				}
+				res.json({body: JSON.parse(body), files: req.files})
 			} else res.end('error')
 		});
 	}
