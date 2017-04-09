@@ -11,6 +11,7 @@ var index = require('./app/routes/index');
 var users = require('./app/routes/users');
 var restaurants = require('./app/routes/restaurant');
 
+//var upload = multer();
 var app = express();
 
 // view engine setup
@@ -22,7 +23,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(upload.array()); // for parsing multipart/form-data
+//app.use(upload.any()); // for parsing multipart/form-data
 //app.use(fileUpload());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

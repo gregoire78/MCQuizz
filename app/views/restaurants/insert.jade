@@ -15,7 +15,7 @@ block content
 			input#inputRestoCity.form-control(type='text', placeholder='Ville du restaurant', name="resto[city]")
 		.form-group
 			label(for='inputRestoPostalCode') Code postal
-			input#inputRestoPostalCode.form-control(type='number', placeholder='Code postal du restaurant', name="resto[postalCode]")
+			input#inputRestoPostalCode.form-control(type='number', placeholder='Code postal du restaurant', name="resto[postal_code]")
 		.form-group
 			label(for='inputRestoDescription') Description
 			textarea#inputRestoDescription.form-control(rows='3', name="resto[description]")
@@ -25,7 +25,6 @@ block content
 			small#fileHelp.form-text.text-muted
 				| This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.
 		button.btn.btn-primary(type='submit') Submit
-
 	// Button trigger modal
 	//button.btn.btn-primary(type='button', data-toggle='modal', data-target='#myModal')
 	//	| Launch demo modal
@@ -55,10 +54,14 @@ block script
 	script(src='http://bgrins.github.io/spectrum/spectrum.js')
 	script.
 		$("#custom").spectrum({
+			cancelText: 'annuler',
 			color: "#ffffff",
 			move: function(color) {
 				$('.previewCrop').css({'background-color': color.toHexString()})
 				//$('.cropper-container').css({'background-color': color.toHexString()})
+			},
+			hide: function (color) {
+				$('.previewCrop').css({'background-color': color.toHexString()})
 			}
 		});
 		var fileSelectEle = $('#exampleInputFile');
@@ -103,6 +106,7 @@ block script
 				aspectRatio: 16 / 10,
 				autoCropArea: 1,
 				zoomOnWheel: true,
+				checkCrossOrigin: false,
 				preview: $('.previewCrop')
 				//crop: function (e) {
 				//	// Output the result data for cropping image.
