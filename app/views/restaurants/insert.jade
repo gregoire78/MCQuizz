@@ -39,10 +39,14 @@ block content
 				.modal-body
 					div(style="width: 100%;")
 						img#image(src='')
-					.btn-group(role='group', aria-label='Basic example')
-						button#plus.btn.btn-secondary(type='button') plus
-						button#moins.btn.btn-secondary(type='button') moins
-					div.previewCrop
+					.container#cropSettings
+						.row
+							.col
+								.btn-group(role='group', aria-label='Basic example')
+									button#plus.btn.btn-secondary(type='button') plus
+									button#moins.btn.btn-secondary(type='button') moins
+							.col
+								div.previewCrop
 				.modal-footer
 					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 					button.btn.btn-primary(type='button') Save changes

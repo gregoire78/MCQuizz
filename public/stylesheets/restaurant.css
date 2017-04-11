@@ -61,4 +61,10 @@ img {
 	overflow: hidden;
 	width: 300px;
 	height: 300px;
+	border: 1px solid saddlebrown;
+	margin: auto;
+}
+
+#cropSettings {
+	margin-top: 15px;
 }
