@@ -39,6 +39,9 @@ block content
 				.modal-body
 					div(style="width: 100%;")
 						img#image(src='')
+					.btn-group(role='group', aria-label='Basic example')
+						button#plus.btn.btn-secondary(type='button') plus
+						button#moins.btn.btn-secondary(type='button') moins
 					div.previewCrop
 				.modal-footer
 					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
@@ -90,6 +93,13 @@ block script
 				reader.readAsDataURL(input.files[0]);
 			}
 		}
+
+		$('#plus').on('click', function (e) {
+			$('#image').cropper('zoom', 0.1);
+		})
+		$('#moins').on('click', function (e) {
+			$('#image').cropper('zoom', -0.1);
+		})
 
 		fileSelectEle.on('change', function (e) {
 			if (this.value.length == 0) {
