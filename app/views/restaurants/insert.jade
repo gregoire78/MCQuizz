@@ -45,6 +45,7 @@ block content
 								.btn-group(role='group', aria-label='Basic example')
 									button#plus.btn.btn-secondary(type='button') plus
 									button#moins.btn.btn-secondary(type='button') moins
+								button#reset.btn.btn-secondary(type='button') reset
 							.col
 								div.previewCrop
 				.modal-footer
@@ -95,6 +96,7 @@ block script
 					}).modal('show')
 				}
 				reader.readAsDataURL(input.files[0]);
+				return input.files[0].name;
 			}
 		}
 
@@ -104,17 +106,22 @@ block script
 		$('#moins').on('click', function (e) {
 			$('#image').cropper('zoom', -0.1);
 		})
-
+		$('#reset').on('click', function (e) {
+			$('.previewCrop').css({'background-color': "#ffffff"});
+			$("#custom").spectrum("set", "#ffffff");
+			$('#image').cropper('reset');
+		})
+		var cropBoxData,canvasData,croppedCanvas, blob, id;
 		fileSelectEle.on('change', function (e) {
 			if (this.value.length == 0) {
 				$(".previewImage").empty();
 				//alert('You clicked cancel - ' + "FileName:" + this.value + "; Length: " + this.value.length);
 			} else {
-				readURL(this);
+				id = readURL(this);
 				//alert('You selected a file - ' + "FileName:" + this.value + "; Length: " + this.value.length);
 			}
 		});
-		var cropBoxData,canvasData,croppedCanvas, blob;
+
 		$("#myModal").on('shown.bs.modal', function (e) {
 			$('#image').cropper({
 				aspectRatio: 16 / 10,
@@ -123,7 +130,7 @@ block script
 				checkCrossOrigin: false,
 				dragMode: 'move',
 				toggleDragModeOnDblclick: false,
-				preview: $('.previewCrop')
+				preview: $('.previewCrop'),
 				//crop: function (e) {
 				//	// Output the result data for cropping image.
 				//	console.log(e.x);
@@ -134,18 +141,31 @@ block script
 				//	console.log(e.scaleX);
 				//	console.log(e.scaleY);
 				//},
-				//built: function () {
-				//	$('#image').cropper('setCropBoxData', cropBoxData);
-				//	$('#image').cropper('setCanvasData', canvasData);
-				//}
+				built: function () {
+					if (!(localStorage.getItem(id) === null)) {
+						$('#image').cropper('setCropBoxData', JSON.parse(localStorage.getItem(id)).cropBoxData);
+						$('#image').cropper('setCanvasData', JSON.parse(localStorage.getItem(id)).canvasData);
+						$('.previewCrop').css({'background-color': JSON.parse(localStorage.getItem(id)).color});
+						$("#custom").spectrum("set", JSON.parse(localStorage.getItem(id)).color);
+					} else {
+						$('.previewCrop').css({'background-color': "#ffffff"});
+						$("#custom").spectrum("set", "#ffffff");
+					}
+				}
 			});
 		}).on('hidden.bs.modal', function (e) {
 			croppedCanvas = $('#image').cropper('getCroppedCanvas', {
 				fillColor: $("#custom").spectrum("get").toHexString()
 			});
 			//var roundedCanvas = getDataURLCanvas(croppedCanvas);
-			//cropBoxData = $('#image').cropper('getCropBoxData');
-			//canvasData = $('#image').cropper('getCanvasData');
+			cropBoxData = $('#image').cropper('getCropBoxData');
+			canvasData = $('#image').cropper('getCanvasData');
+			var store = {
+				"color": $("#custom").spectrum("get").toHexString(),
+				"cropBoxData": cropBoxData,
+				"canvasData": canvasData
+			}
+			localStorage.setItem(id.toString(),JSON.stringify(store));
 			var dataURL = croppedCanvas.toDataURL('image/png');
 			$(".previewImage").empty().html('<img height="200" src="' + dataURL + '">');
 			blob = dataURLtoBlob(dataURL);
