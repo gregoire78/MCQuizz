@@ -71,7 +71,7 @@ let Restaurants = {
 		if (req.files.recfile.name != "") formData.recfile = fs.createReadStream(req.files.recfile.path);
 		if (req.files.file != undefined) formData.file = fs.createReadStream(req.files.file.path);
 
-		request.post({url:'http://oresto.dev/restaurant/insert/?key=da39a3ee5e6b4b0d3255bfef95601890afd80709', formData: formData}, function(err,httpResponse,body) {
+		request.post({url:'http://api.gregoirejoncour.xyz/restaurant/insert/?key=da39a3ee5e6b4b0d3255bfef95601890afd80709', formData: formData}, function(err,httpResponse,body) {
 			if (!err && httpResponse.statusCode == 200) {
 				console.log(body);
 				fs.unlink(req.files.recfile.path);
