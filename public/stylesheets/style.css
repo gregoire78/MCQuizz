@@ -20,3 +20,49 @@
 .sortableList div, .gu-mirror{
 	transition: opacity 0.4s ease-in-out;
 }
+
+
+/* custom popover
+---------------------------*/
+.popover {
+	max-width: 400px;
+	cursor: default;
+	z-index: 10;
+}
+
+.popover:hover {
+	opacity: 0.4;
+}
+
+.popover-content {
+	color: #f6f6f6;
+	font-weight: bold;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+/* ERROR */
+.popError {
+	background-color: #d9534f;
+	border: none !important;;
+}
+.popError>.popover-arrow, .popError:after, .popError:before {
+	border-bottom-color: #d9534f !important;
+}
+.popError .popover-content p {
+	margin-bottom: 0;
+}
+/* FIN ERROR */
+
+/* WARNING */
+.popWarning {
+	background-color: #f0ad4e;
+	border: none !important;
+}
+.popWarning>.popover-arrow, .popWarning:after, .popWarning:before {
+	border-bottom-color: #f0ad4e !important;
+}
+.popWarning .popover-content p {
+	margin-bottom: 0;
+}
+/* FIN WARNING */

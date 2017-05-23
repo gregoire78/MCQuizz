@@ -25,7 +25,8 @@ block content
 			small#fileHelp.form-text.text-muted
 				| This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.
 		div#summy
-		button.btn.btn-primary(type='submit') Submit
+		button.btn.btn-primary(type='submit', style="margin-right: 5px;") Enregistrer
+		button.btn.btn-default(type='reset') Reset
 	// Button trigger modal
 	//button.btn.btn-primary(type='button', data-toggle='modal', data-target='#myModal')
 	//	| Launch demo modal
@@ -61,8 +62,10 @@ block stylesheet
 block script
 	script(src='/js/canvas-to-blob.min.js')
 	script(src='http://bgrins.github.io/spectrum/spectrum.js')
+	script(src='/js/bootstrap_feedback.js')
 	script.
-		$("#addResto").validate({
+		var validator = $("#addResto").validate({
+			debug: true,
 			messages: {
 				'resto[name]': {
 					required: "Veuillez spécifier le nom du restaurant",
@@ -85,13 +88,42 @@ block script
 				}
 
 			},
+			errorElement: "div",
 			errorPlacement: function (error, element) {
-				error.appendTo(element.parent().last());
+				//error.appendTo(element.parent().last()).addClass("form-control-feedback");
+				//element.parent().addClass("has-danger").find("input, textarea").addClass("form-control-danger").parent().find("label").addClass("form-control-label");
 			},
 			showErrors: function (errorMap, errorList) {
-				$("#summy").html("Il y a " + this.numberOfInvalids() + " erreurs.");
-				this.defaultShowErrors();
+				if (this.numberOfInvalids() !== 0) {
+					if ($("button[type=submit]").attr('aria-describedby') != undefined) {
+						var desc = $("button[type=submit]").attr('aria-describedby');
+						$('#' + desc).find(".popover-content").html('<p>Il y a ' + this.numberOfInvalids() + ' erreurs</p>')
+					} else {
+						$("button[type=submit]").popover("dispose").popover({
+							html: true,
+							container: 'body',
+							content: '<p>Il y a ' + this.numberOfInvalids() + ' erreurs</p>',
+							placement: "bottom",
+							template: '<div class="popover popError" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
+						}).popover('show').removeClass("btn-primary").removeClass("btn-warning").addClass("btn-danger");
+					}
+				} else {
+					$("button[type=submit]").popover("dispose").removeClass("btn-danger").removeClass("btn-warning").addClass("btn-primary").removeAttr('aria-describedby');
+				}
+				//$("#summy").text("Il y a " + this.numberOfInvalids() + " erreurs");
+				//if (jQuery.isEmptyObject(errorList))
+				$.each(errorList, function (key, val) {
+					bootstrap_error(val)
+				});
+				this.defaultShowErrors()
 			},
+			success: function (label, element) {
+				bootstrap_reset(element)
+			},
+			//highlight: function (element, errorClass, validClass) {
+			//
+			//},
+			onfocusout: false,
 			submitHandler: function (form) {
 				var $form = $(form);
 				// Create a test FormData object
@@ -121,6 +153,19 @@ block script
 					})
 			}
 		});
+		$("#addResto").on("reset", function () { // reset le formulaire
+			//reset form
+			validator.resetForm();
+			$.each($(this).children().find('input, textarea'), function (key, val) {
+				bootstrap_reset(val)
+			});
+			$(".previewImage").empty();
+			$("button[type=submit]").popover("dispose").removeClass("btn-danger").removeClass("btn-warning").addClass("btn-primary").removeAttr('aria-describedby');
+		});
+		// onchange input file
+		$('#exampleInputFile').on('change', function (e) {
+			validator.element( "#exampleInputFile" );
+		})
 		$("#custom").spectrum({
 			cancelText: 'annuler',
 			color: "#ffffff",

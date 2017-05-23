@@ -50,4 +50,8 @@ html(lang='en')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js')
 		script(src='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.js')
+		script(type="text/javascript").
+			$(function () {
+				$('[data-toggle="tooltip"]').tooltip()
+			})
 		block script
