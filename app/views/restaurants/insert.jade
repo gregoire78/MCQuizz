@@ -25,6 +25,7 @@ block content
 			small#fileHelp.form-text.text-muted
 				| This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.
 		div#summy
+		.previewImage
 		button.btn.btn-primary(type='submit', style="margin-right: 5px;") Enregistrer
 		button.btn.btn-default(type='reset') Reset
 	// Button trigger modal
@@ -54,7 +55,7 @@ block content
 					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 					button.btn.btn-primary(type='button') Save changes
 					input#custom(type='text')
-	.previewImage
+
 block stylesheet
 	link(rel='stylesheet', href='/stylesheets/restaurant.css')
 	link(rel='stylesheet', href='http://bgrins.github.io/spectrum/spectrum.css')
@@ -64,21 +65,30 @@ block script
 	script(src='http://bgrins.github.io/spectrum/spectrum.js')
 	script(src='/js/bootstrap_feedback.js')
 	script.
+		// Matches FR postcode.
+		jQuery.validator.addMethod("postcodeFR", function (value, element) {
+			return this.optional(element) || /^(([0-8][0-9])|(9[0-5])|(2[ab]))[0-9]{3}$/i.test(value);
+		}, "Please specify a valid FR postcode");
 		var validator = $("#addResto").validate({
 			debug: true,
+			rules: {
+				"resto[postal_code]": "postcodeFR"
+			},
 			messages: {
 				'resto[name]': {
 					required: "Veuillez spécifier le nom du restaurant",
 					minlength: jQuery.validator.format("Taille trop petite - {0} caractères minimum")
 				},
 				'resto[address]': {
-					required: "Veuillez spécifier l'adresse du restaurant"
+					required: "Veuillez spécifier l'adresse du restaurant",
+					minlength: jQuery.validator.format("Taille trop petite - {0} caractères minimum")
 				},
 				'resto[city]': {
 					required: "Veuillez spécifier la ville du restaurant"
 				},
 				'resto[postal_code]': {
-					required: "Veuillez spécifier le code postale du restaurant"
+					required: "Veuillez spécifier le code postale du restaurant",
+					postcodeFR: "Mauvais code postal"
 				},
 				'resto[description]': {
 					required: "Veuillez insérer une description du restaurant"
@@ -165,7 +175,7 @@ block script
 		// onchange input file
 		$('#exampleInputFile').on('change', function (e) {
 			validator.element( "#exampleInputFile" );
-		})
+		});
 		$("#custom").spectrum({
 			cancelText: 'annuler',
 			color: "#ffffff",
